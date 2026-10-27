@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- 2FA integration guide: the Node.js `otpauth://` example now writes a space in the issuer as `%20` instead of `+`, which some authenticator apps showed as part of the name. Both examples now accept secrets pasted with dashes, and the Python example notes it needs Python 3.10 or later.
+
 ## [1.1.0] - 2026-10-27
 
 ### Added

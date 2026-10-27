@@ -7,7 +7,7 @@ How to add authenticator-app two-factor authentication (TOTP, the six-digit code
 - [RFC 4648](https://www.rfc-editor.org/rfc/rfc4648#section-6): Base32, the encoding used for the secret.
 - The [Key URI Format](https://github.com/google/google-authenticator/wiki/Key-Uri-Format): the `otpauth://` link inside the QR code. It isn't an RFC, but every authenticator app reads it.
 
-The code below is complete and runs as-is: Node.js (built-in `node:crypto`) and Python (standard library only). Both are checked against the RFC 4226 and RFC 6238 test vectors. You can use [OTP QR Studio](https://ragedpanda.github.io/otp-qr/) to check your server: paste the secret your server generated, scan the QR, and compare codes.
+The code below is complete and runs as-is: Node.js (built-in `node:crypto`) and Python 3.10+ (standard library only). Both are checked against the RFC 4226 and RFC 6238 test vectors. You can use [OTP QR Studio](https://ragedpanda.github.io/otp-qr/) to check your server: paste the secret your server generated, scan the QR, and compare codes.
 
 ## Contents
 
@@ -84,7 +84,7 @@ Never show the QR or secret again after enrolment. To move to a new phone, the u
 2. **Rate-limit** the code check per account, not only per IP address (RFC 4226 section 7.3). A 6-digit code has a million values and the window below accepts three of them, so an unthrottled attacker gets in after about 330,000 guesses on average. Five failures, then a delay or a lock that grows with each further failure, is typical.
 3. **Accept a small window.** Allow the previous and the next time step as well as the current one, to cover clock drift and the time the user takes to type (RFC 6238 section 5.2). One step either side, ±30 seconds, is the usual value. Don't go wider without a reason: every extra step is another valid code for an attacker to guess.
 4. **Reject reused codes.** RFC 6238 section 5.2 says the verifier must not accept the second attempt of a code that was already accepted. Store the time step of the last code that succeeded and only accept a step greater than it. Do the check and the update atomically (one `UPDATE ... WHERE last_used_step < ?` or a row lock), so two simultaneous requests with the same code can't both pass.
-5. **Compare in constant time** (`crypto.timingSafeEqual`, `hmac.compare_digest`) so response timing doesn't leak how many leading digits were right.
+5. **Compare in constant time** (`crypto.timingSafeEqual`, `hmac.compare_digest`) so response timing doesn't leak how many leading digits were right. The loop in the examples stops at the first step that matches, so timing can still hint at *which* step matched. That only tells an attacker about a code that was already correct, so it gives nothing away, but you can check every step before returning if you'd rather not have the difference.
 6. Treat the code as a string. Strip spaces, and keep leading zeros: `012345` is not `12345`.
 
 If the matched step is the previous or next one, the user's clock is off. You can store the offset and centre the next check on it (RFC 6238 section 6), but with NTP-synced phones the ±1 window is usually enough. Keep your own servers on NTP too: a server clock that drifts locks everyone out.
@@ -118,7 +118,7 @@ export function base32Decode(text) {
   const bytes = [];
   let bits = 0;
   let value = 0;
-  for (const char of text.replace(/[\s=]/g, '').toUpperCase()) {
+  for (const char of text.replace(/[\s=-]/g, '').toUpperCase()) {
     const index = ALPHABET.indexOf(char);
     if (index === -1) throw new Error('Invalid Base32 secret');
     value = ((value << 5) | index) & 0xffff;
@@ -163,8 +163,9 @@ export function verifyTotp(key, code, lastUsedStep, { nowMs = Date.now(), period
 
 export function otpauthUri({ issuer, account, secret }) {
   const label = `${encodeURIComponent(issuer)}:${encodeURIComponent(account)}`;
-  const params = new URLSearchParams({ secret, issuer });
-  return `otpauth://totp/${label}?${params}`;
+  // Percent-encode with encodeURIComponent, not URLSearchParams: the Key URI Format wants
+  // spaces as %20, and URLSearchParams writes them as +, which some apps show literally.
+  return `otpauth://totp/${label}?secret=${secret}&issuer=${encodeURIComponent(issuer)}`;
 }
 ```
 
@@ -191,7 +192,7 @@ Start `lastUsedStep` at `-1` for a newly enrolled user, or at the step of the en
 
 ## Code: Python
 
-`otp.py`, standard library only:
+`otp.py`, standard library only. It needs Python 3.10 or later for the `int | None` type hints.
 
 ```python
 import base64
@@ -209,7 +210,7 @@ def generate_secret(num_bytes: int = 20) -> str:
 
 
 def decode_secret(secret: str) -> bytes:
-    cleaned = secret.replace(" ", "").upper()
+    cleaned = "".join(secret.split()).replace("-", "").rstrip("=").upper()
     return base64.b32decode(cleaned + "=" * (-len(cleaned) % 8))
 
 
