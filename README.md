@@ -6,6 +6,11 @@ Make QR codes for authenticator apps, then check that the app produces the right
 
 ![CI](https://github.com/RagedPanda/otp-qr/actions/workflows/ci.yml/badge.svg)
 
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/screenshot-dark.png" />
+  <img src="docs/screenshot-light.png" alt="OTP QR Studio: account, secret and settings on the left; the styled QR code and a verified code on the right" width="800" />
+</picture>
+
 ## Why
 
 Setting up two-factor authentication by hand, for a test account, a shared service login or a server you run, means writing an `otpauth://` URI and turning it into a QR code. The usual tool for that is the [FreeOTP QR generator](https://freeotp.github.io/qrcode.html). It makes the QR code but stops there:
