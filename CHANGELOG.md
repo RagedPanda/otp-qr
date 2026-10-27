@@ -7,9 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.0] - 2026-10-27
+
 ### Added
 
-- A [2FA integration guide](docs/2fa-integration-guide.md) for developers adding authenticator-app login to their own application, following RFC 4226 and RFC 6238, with tested Node.js and Python code, a security checklist and the RFC test vectors.
+- A [2FA integration guide](https://github.com/RagedPanda/otp-qr/blob/main/docs/2fa-integration-guide.md) for developers adding authenticator-app login to their own application, following RFC 4226 and RFC 6238, with tested Node.js and Python code, a security checklist and the RFC test vectors.
 - Search and social metadata: a descriptive title and description, a canonical URL, Open Graph and Twitter cards with a preview image, schema.org structured data and a sitemap, so the page is easier to find and shows a proper preview when the link is shared.
 
 ### Changed
@@ -31,5 +33,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Light and dark themes, and a layout that works on phones.
 - A Content Security Policy that blocks every network request except the optional logo image.
 
-[unreleased]: https://github.com/RagedPanda/otp-qr/compare/v1.0.0...HEAD
+[unreleased]: https://github.com/RagedPanda/otp-qr/compare/v1.1.0...HEAD
+[1.1.0]: https://github.com/RagedPanda/otp-qr/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/RagedPanda/otp-qr/releases/tag/v1.0.0
