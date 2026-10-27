@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- A [2FA integration guide](docs/2fa-integration-guide.md) for developers adding authenticator-app login to their own application, following RFC 4226 and RFC 6238, with tested Node.js and Python code, a security checklist and the RFC test vectors.
 - Search and social metadata: a descriptive title and description, a canonical URL, Open Graph and Twitter cards with a preview image, schema.org structured data and a sitemap, so the page is easier to find and shows a proper preview when the link is shared.
 
 ### Changed

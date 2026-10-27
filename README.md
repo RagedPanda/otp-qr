@@ -28,7 +28,7 @@ OTP QR Studio adds a verify step that runs the same RFC 4226/6238 maths as the s
 
 ## Use it
 
-1. **Account.** Enter an issuer (optional) and an account name, or press **Random** for a name like `quiet-falcon-4821`.
+1. **Account.** Enter an issuer (optional) and an account name., or press **Random** for a name like `quiet-falcon-4821`.
 2. **Secret.** A random secret is generated when the page loads. Paste your own Base32 secret if you already have one, or press **New secret**.
 3. **Settings.** Choose time-based (TOTP) or counter-based (HOTP), the algorithm, digit count, and period or starting counter. FreeOTP's image and lock options are under **FreeOTP extras**.
 4. **Scan** the QR code with your authenticator app.
@@ -51,6 +51,10 @@ npm start            # serves the folder at http://localhost:3000
 ```
 
 ES modules don't load from `file://`, so open the page through a local server rather than by double-clicking `index.html`.
+
+## Adding 2FA to your own app
+
+Building the server side? The [2FA integration guide](docs/2fa-integration-guide.md) walks through it step by step, following RFC 4226 and RFC 6238: generating and storing the secret, the `otpauth://` QR code, confirming enrolment, the verification window, rejecting reused codes, rate limiting and recovery codes. It includes tested Node.js and Python code and the RFC test vectors, and you can use this page to check your server's codes against a real authenticator app.
 
 ## What it supports
 
