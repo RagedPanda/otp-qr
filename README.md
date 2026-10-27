@@ -1,10 +1,15 @@
 # OTP QR Studio
 
-Make QR codes for authenticator apps, then check that the app produces the right codes. Everything runs in your browser.
+[![CI](https://github.com/RagedPanda/otp-qr/actions/workflows/ci.yml/badge.svg)](https://github.com/RagedPanda/otp-qr/actions/workflows/ci.yml)
+[![Deploy](https://github.com/RagedPanda/otp-qr/actions/workflows/pages.yml/badge.svg)](https://github.com/RagedPanda/otp-qr/actions/workflows/pages.yml)
+[![Coverage: 100%](https://img.shields.io/badge/coverage-100%25-brightgreen)](#tests)
+[![Release](https://img.shields.io/github/v/release/RagedPanda/otp-qr)](https://github.com/RagedPanda/otp-qr/releases)
+[![License: MIT](https://img.shields.io/github/license/RagedPanda/otp-qr)](LICENSE)
+[![Runtime dependencies: 1](https://img.shields.io/badge/runtime%20dependencies-1%20%28vendored%29-blue)](#how-its-built)
+
+A free, open-source **OTP QR code generator and verifier** for two-factor authentication (2FA). Make TOTP and HOTP `otpauth://` QR codes for Google Authenticator, Microsoft Authenticator, Authy, FreeOTP, 1Password, Bitwarden and other authenticator apps, then check that the app produces the right codes. Everything runs in your browser.
 
 **Open it: https://ragedpanda.github.io/otp-qr/**
-
-![CI](https://github.com/RagedPanda/otp-qr/actions/workflows/ci.yml/badge.svg)
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/screenshot-dark.png" />
@@ -106,6 +111,8 @@ npm test             # all tests
 npm run coverage     # fails below 100% line, branch or function coverage
 ```
 
+CI runs the tests on Node 22 and 24 for every push and pull request, plus a coverage job that fails if line, branch or function coverage of `src/` and `scripts/` drops below 100%. Pull requests into `main` need all three checks to pass. The coverage badge above is static; the coverage job is what keeps it true.
+
 The OTP code is checked against every test vector in RFC 4226 appendix D and RFC 6238 appendix B (SHA1, SHA256 and SHA512), and Base32 against RFC 4648 section 10. All modules except the DOM wiring in `src/app.js` have 100% coverage.
 
 There's no benchmark: every operation finishes well within a frame.
@@ -113,12 +120,6 @@ There's no benchmark: every operation finishes well within a frame.
 ## Releases
 
 Pushing to `main` deploys the page to GitHub Pages. Versions are listed in [CHANGELOG.md](CHANGELOG.md). Pushing a `vX.Y.Z` tag creates a GitHub release with that version's changelog section.
-
-## Related
-
-- [FreeOTP QR generator](https://freeotp.github.io/qrcode.html): the page this one is based on. Generates the QR code but doesn't verify it.
-- [FreeOTP](https://freeotp.github.io/): the authenticator app that defines the `image` and `lock` parameters.
-- [otpauth](https://github.com/hectorm/otpauth): a JavaScript library for HOTP and TOTP, if you need this logic in your own code.
 
 ## License
 
