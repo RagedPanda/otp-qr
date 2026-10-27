@@ -1,0 +1,25 @@
+# Changelog
+
+All notable changes to this project will be documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [Unreleased]
+
+## [1.0.0] - 2026-10-27
+
+### Added
+
+- QR codes for `otpauth://` URIs (TOTP and HOTP), drawn as SVG with dot modules, rounded finder eyes and a centre logo badge, at error-correction level H so the logo never stops a scan.
+- A verify step: type the code your authenticator app shows and the page checks it against RFC 4226/6238, allowing one time step of clock drift for TOTP and a 10-code look-ahead with counter resync for HOTP.
+- A live expected code with a countdown ring, the next code, and counter controls for HOTP.
+- A "Random" button for the account name, so the QR doesn't have to carry your real name or email.
+- Secrets generated with `crypto.getRandomValues`, sized to the chosen hash (160 bits for SHA1 up to 512 bits for SHA512), with a strength hint.
+- SHA1, SHA256, SHA384 and SHA512; 6, 7 or 8 digits; 15 s to 2 min periods; FreeOTP's `image` and `lock` parameters.
+- PNG and SVG downloads, and copying the `otpauth://` link or the secret.
+- Light and dark themes, and a layout that works on phones.
+- A Content Security Policy that blocks every network request except the optional logo image.
+
+[unreleased]: https://github.com/RagedPanda/otp-qr/compare/v1.0.0...HEAD
+[1.0.0]: https://github.com/RagedPanda/otp-qr/releases/tag/v1.0.0
