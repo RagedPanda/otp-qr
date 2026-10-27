@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; img-src * data: blob:; style-src 'self'; script-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'"
+    />
+    <meta name="referrer" content="no-referrer" />
+    <meta name="description" content="Make otpauth:// QR codes for authenticator apps and check the codes they produce. Runs entirely in your browser." />
+    <meta name="color-scheme" content="light dark" />
+    <title>OTP QR Studio</title>
+    <link rel="icon" href="assets/icon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="assets/styles.css" />
+    <script src="vendor/qrcode-generator.js"></script>
+    <script type="module" src="src/app.js"></script>
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="brand">
+        <img src="assets/icon.svg" alt="" width="36" height="36" />
+        <div>
+          <h1>OTP QR Studio</h1>
+          <p>Authenticator QR codes, made and checked in your browser.</p>
+        </div>
+      </div>
+      <div class="topbar-actions">
+        <a class="icon-button" href="https://github.com/RagedPanda/otp-qr" title="Source code" aria-label="Source code">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.9 1.52 2.34 1.08 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02a9.6 9.6 0 0 1 5 0c1.91-1.3 2.75-1.02 2.75-1.02.55 1.38.2 2.4.1 2.65.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.69-4.57 4.93.36.31.68.92.68 1.85v2.75c0 .27.18.58.69.48A10 10 0 0 0 12 2Z"/></svg>
+        </a>
+        <button class="icon-button" id="theme-toggle" type="button" title="Toggle theme" aria-label="Toggle theme">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a9 9 0 1 0 9 9 7 7 0 0 1-9-9Z"/></svg>
+        </button>
+      </div>
+    </header>
+
+    <main class="layout">
+      <section class="column" aria-label="Settings">
+        <div class="card">
+          <h2><span class="step">1</span> Account</h2>
+          <label class="field">
+            <span>Issuer <em>optional</em></span>
+            <input id="issuer" type="text" placeholder="Acme Inc" autocomplete="off" spellcheck="false" />
+          </label>
+          <label class="field">
+            <span>Account</span>
+            <div class="input-row">
+              <input id="account" type="text" placeholder="you@example.com" autocomplete="off" spellcheck="false" />
+              <button class="button ghost" id="random-account" type="button" title="Use a random name instead of yours">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 3h5v5M4 20 21 3M21 16v5h-5M15 15l6 6M4 4l5 5"/></svg>
+                Random
+              </button>
+            </div>
+          </label>
+        </div>
+
+        <div class="card">
+          <h2><span class="step">2</span> Secret</h2>
+          <label class="field">
+            <span>Secret key <em>Base32</em></span>
+            <div class="input-row">
+              <input id="secret" class="mono" type="password" autocomplete="off" spellcheck="false" />
+              <button class="button ghost square" id="toggle-secret" type="button" title="Show secret" aria-label="Show secret" aria-pressed="false">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></svg>
+              </button>
+              <button class="button ghost square" id="copy-secret" type="button" title="Copy secret" aria-label="Copy secret">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>
+              </button>
+            </div>
+          </label>
+          <div class="secret-footer">
+            <p class="hint" id="secret-hint"></p>
+            <button class="button ghost" id="random-secret" type="button">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12a9 9 0 1 1-3-6.7L21 8M21 3v5h-5"/></svg>
+              New secret
+            </button>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2><span class="step">3</span> Settings</h2>
+          <fieldset class="field">
+            <legend>Type</legend>
+            <div class="segmented" role="radiogroup">
+              <label><input type="radio" name="type" value="totp" checked /><span>Time-based</span></label>
+              <label><input type="radio" name="type" value="hotp" /><span>Counter-based</span></label>
+            </div>
+          </fieldset>
+          <fieldset class="field">
+            <legend>Algorithm</legend>
+            <div class="segmented" role="radiogroup">
+              <label><input type="radio" name="algorithm" value="SHA1" checked /><span>SHA1</span></label>
+              <label><input type="radio" name="algorithm" value="SHA256" /><span>SHA256</span></label>
+              <label><input type="radio" name="algorithm" value="SHA384" /><span>SHA384</span></label>
+              <label><input type="radio" name="algorithm" value="SHA512" /><span>SHA512</span></label>
+            </div>
+          </fieldset>
+          <div class="field-pair">
+            <fieldset class="field">
+              <legend>Digits</legend>
+              <div class="segmented" role="radiogroup">
+                <label><input type="radio" name="digits" value="6" checked /><span>6</span></label>
+                <label><input type="radio" name="digits" value="7" /><span>7</span></label>
+                <label><input type="radio" name="digits" value="8" /><span>8</span></label>
+              </div>
+            </fieldset>
+            <fieldset class="field" id="period-field">
+              <legend>Period</legend>
+              <div class="segmented" role="radiogroup">
+                <label><input type="radio" name="period" value="15" /><span>15s</span></label>
+                <label><input type="radio" name="period" value="30" checked /><span>30s</span></label>
+                <label><input type="radio" name="period" value="60" /><span>60s</span></label>
+                <label><input type="radio" name="period" value="120" /><span>2m</span></label>
+              </div>
+            </fieldset>
+            <label class="field" id="counter-field" hidden>
+              <span>Starting counter</span>
+              <input id="counter" type="number" min="0" step="1" value="0" inputmode="numeric" />
+            </label>
+          </div>
+          <p class="hint">Google Authenticator ignores the algorithm, digits and period. Keep SHA1, 6 digits and 30s for it.</p>
+
+          <details class="extras">
+            <summary>FreeOTP extras</summary>
+            <label class="field">
+              <span>Image URL <em>optional, shown in the app and in the QR</em></span>
+              <input id="image" type="url" placeholder="https://example.com/logo.png" autocomplete="off" spellcheck="false" />
+            </label>
+            <label class="toggle">
+              <input id="lock" type="checkbox" />
+              <span class="switch" aria-hidden="true"></span>
+              <span>Require unlock before showing codes</span>
+            </label>
+          </details>
+        </div>
+      </section>
+
+      <section class="column sticky" aria-label="QR code and verification">
+        <div class="card qr-card">
+          <div class="qr-frame">
+            <div id="qr" class="qr" hidden></div>
+            <div id="qr-empty" class="qr-empty">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><path d="M14 14h3v3h-3zM18 18h3v3h-3z"/></svg>
+              <p id="qr-empty-text"></p>
+            </div>
+          </div>
+          <div class="qr-meta">
+            <strong id="label-account">—</strong>
+            <span id="label-issuer"></span>
+            <span class="chips" id="label-chips"></span>
+          </div>
+          <div class="actions">
+            <button class="button primary" id="copy-uri" type="button">Copy link</button>
+            <button class="button" id="download-png" type="button">PNG</button>
+            <button class="button" id="download-svg" type="button">SVG</button>
+          </div>
+          <code class="uri" id="uri"></code>
+        </div>
+
+        <div class="card verify-card">
+          <h2><span class="step">4</span> Verify</h2>
+          <p class="hint">Scan the code with your authenticator app, then type the code it shows to check it works.</p>
+          <form id="verify-form" class="verify-form" autocomplete="off">
+            <input id="verify-code" class="otp-input mono" type="text" inputmode="numeric" pattern="[0-9 ]*" placeholder="000000" aria-label="Code from your app" />
+            <button class="button primary" type="submit">Verify</button>
+          </form>
+          <div id="verify-result" class="verify-result" role="status" aria-live="polite" hidden></div>
+
+          <div class="expected">
+            <div class="ring" id="ring" aria-hidden="true">
+              <svg viewBox="0 0 36 36"><circle class="ring-track" cx="18" cy="18" r="16"/><circle class="ring-progress" id="ring-progress" cx="18" cy="18" r="16" pathLength="100"/></svg>
+              <span id="ring-label"></span>
+            </div>
+            <div class="expected-codes">
+              <span class="eyebrow" id="expected-title">Expected code</span>
+              <button class="code-reveal mono" id="expected-code" type="button" title="Click to show or hide"></button>
+              <span class="hint" id="expected-next"></span>
+            </div>
+            <div class="counter-controls" id="counter-controls" hidden>
+              <button class="button ghost square" id="counter-down" type="button" aria-label="Previous counter">−</button>
+              <button class="button ghost square" id="counter-up" type="button" aria-label="Next counter">+</button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <p>
+        Nothing leaves your browser: the secret, the QR code and the checks are all computed locally, and the page
+        blocks network requests. The only exception is the optional image URL, which your browser fetches to show the logo.
+      </p>
+      <p>
+        Follows the <a href="https://github.com/google/google-authenticator/wiki/Key-Uri-Format">Key URI Format</a>,
+        RFC 4226 (HOTP) and RFC 6238 (TOTP). Inspired by the
+        <a href="https://freeotp.github.io/qrcode.html">FreeOTP QR generator</a>.
+      </p>
+    </footer>
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  </body>
+</html>
