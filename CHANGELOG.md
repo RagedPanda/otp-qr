@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Search and social metadata: a descriptive title and description, a canonical URL, Open Graph and Twitter cards with a preview image, schema.org structured data and a sitemap, so the page is easier to find and shows a proper preview when the link is shared.
+
 ### Changed
 
 - A code is only checked when you press Verify (or Enter), not as soon as the last digit is typed. Editing the code clears the previous result, so an old "Code verified" never sits next to a different code.

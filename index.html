@@ -8,9 +8,54 @@
       content="default-src 'self'; img-src * data: blob:; style-src 'self'; script-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'"
     />
     <meta name="referrer" content="no-referrer" />
-    <meta name="description" content="Make otpauth:// QR codes for authenticator apps and check the codes they produce. Runs entirely in your browser." />
+    <title>OTP QR Code Generator &amp; Verifier for 2FA (TOTP / HOTP) | OTP QR Studio</title>
+    <meta name="description" content="Free OTP QR code generator for two-factor authentication. Create TOTP and HOTP otpauth:// QR codes for Google Authenticator, Microsoft Authenticator, Authy and FreeOTP, then verify the 2FA code your app shows. Private: runs entirely in your browser." />
+    <meta name="keywords" content="OTP QR code generator, 2FA QR code generator, TOTP QR code, HOTP QR code, otpauth URI generator, authenticator QR code, Google Authenticator QR code, Microsoft Authenticator, Authy, FreeOTP, two-factor authentication, MFA, verify OTP code, TOTP verifier, Base32 secret generator" />
+    <meta name="robots" content="index, follow" />
     <meta name="color-scheme" content="light dark" />
-    <title>OTP QR Studio</title>
+    <meta name="theme-color" content="#5b4bf0" />
+    <link rel="canonical" href="https://ragedpanda.github.io/otp-qr/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="OTP QR Studio" />
+    <meta property="og:url" content="https://ragedpanda.github.io/otp-qr/" />
+    <meta property="og:title" content="OTP QR Code Generator &amp; Verifier for 2FA" />
+    <meta property="og:description" content="Create TOTP and HOTP QR codes for any authenticator app and verify the codes it produces. Free, open source, runs in your browser." />
+    <meta property="og:image" content="https://ragedpanda.github.io/otp-qr/assets/social.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="OTP QR Studio with a styled QR code and the account and secret settings" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="OTP QR Code Generator &amp; Verifier for 2FA" />
+    <meta name="twitter:description" content="Create TOTP and HOTP QR codes for any authenticator app and verify the codes it produces." />
+    <meta name="twitter:image" content="https://ragedpanda.github.io/otp-qr/assets/social.png" />
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "OTP QR Studio",
+      "url": "https://ragedpanda.github.io/otp-qr/",
+      "description": "Free OTP QR code generator and verifier for two-factor authentication. Creates TOTP and HOTP otpauth:// QR codes for authenticator apps and checks the codes they produce, entirely in the browser.",
+      "applicationCategory": "SecurityApplication",
+      "operatingSystem": "Any (web browser)",
+      "browserRequirements": "Requires JavaScript",
+      "isAccessibleForFree": true,
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "featureList": [
+        "TOTP and HOTP QR code generator",
+        "Verify OTP codes from your authenticator app",
+        "Random Base32 secret generator",
+        "Random account names",
+        "SHA1, SHA256, SHA384 and SHA512",
+        "PNG and SVG QR code download"
+      ],
+      "license": "https://opensource.org/licenses/MIT",
+      "codeRepository": "https://github.com/RagedPanda/otp-qr"
+    }
+    </script>
     <link rel="icon" href="assets/icon.svg" type="image/svg+xml" />
     <link rel="stylesheet" href="assets/styles.css" />
     <script src="vendor/qrcode-generator.js"></script>
@@ -22,7 +67,7 @@
         <img src="assets/icon.svg" alt="" width="36" height="36" />
         <div>
           <h1>OTP QR Studio</h1>
-          <p>Authenticator QR codes, made and checked in your browser.</p>
+          <p>Free OTP QR code generator and verifier for 2FA apps. Runs in your browser.</p>
         </div>
       </div>
       <div class="topbar-actions">
