@@ -28,7 +28,7 @@ OTP QR Studio adds a verify step that runs the same RFC 4226/6238 maths as the s
 
 ## Use it
 
-1. **Account.** Enter an issuer (optional) and an account name., or press **Random** for a name like `quiet-falcon-4821`.
+1. **Account.** Enter an issuer (optional) and an account name. It starts as `ragedpanda.github.io/otp-qr` so there's a QR code to try straight away. Or press **Random** for a name like `quiet-falcon-4821`.
 2. **Secret.** A random secret is generated when the page loads. Paste your own Base32 secret if you already have one, or press **New secret**.
 3. **Settings.** Choose time-based (TOTP) or counter-based (HOTP), the algorithm, digit count, and period or starting counter. FreeOTP's image and lock options are under **FreeOTP extras**.
 4. **Scan** the QR code with your authenticator app.
