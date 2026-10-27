@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- The account field starts filled in with `ragedpanda.github.io/otp-qr`, so a QR code and a working verify step are ready on the first visit. Replace it, or press Random, for your own entry.
 - A code is only checked when you press Verify (or Enter), not as soon as the last digit is typed. Editing the code clears the previous result, so an old "Code verified" never sits next to a different code.
 
 ## [1.0.0] - 2026-10-27
