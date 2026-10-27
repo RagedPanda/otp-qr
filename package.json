@@ -1,6 +1,6 @@
 {
   "name": "otp-qr",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "private": true,
   "description": "Make otpauth:// QR codes for authenticator apps and check the codes they produce, all in the browser.",
   "keywords": [
