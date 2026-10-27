@@ -401,7 +401,8 @@ listen(elements['verify-form'], 'submit', (event) => {
 listen(elements['verify-code'], 'input', () => {
   const digits = elements['verify-code'].value.replace(/\D/g, '');
   elements['verify-code'].value = digits;
-  if (state.settings && digits.length === state.settings.digits) verify();
+  // Verification only runs from the Verify button; editing the code clears the last result.
+  elements['verify-result'].hidden = true;
 });
 listen(elements['expected-code'], 'click', () => {
   state.revealed = !state.revealed;
