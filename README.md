@@ -3,7 +3,7 @@
 [![CI](https://github.com/RagedPanda/otp-qr/actions/workflows/ci.yml/badge.svg)](https://github.com/RagedPanda/otp-qr/actions/workflows/ci.yml)
 [![Deploy](https://github.com/RagedPanda/otp-qr/actions/workflows/pages.yml/badge.svg)](https://github.com/RagedPanda/otp-qr/actions/workflows/pages.yml)
 [![Coverage: 100%](https://img.shields.io/badge/coverage-100%25-brightgreen)](#tests)
-[![Release](https://img.shields.io/github/v/release/RagedPanda/otp-qr)](https://github.com/RagedPanda/otp-qr/releases)
+[![Latest release](https://img.shields.io/github/v/release/RagedPanda/otp-qr?sort=semver&display_name=tag&label=latest%20release)](https://github.com/RagedPanda/otp-qr/releases/latest)
 [![License: MIT](https://img.shields.io/github/license/RagedPanda/otp-qr)](LICENSE)
 [![Runtime dependencies: 1](https://img.shields.io/badge/runtime%20dependencies-1%20%28vendored%29-blue)](#how-its-built)
 
